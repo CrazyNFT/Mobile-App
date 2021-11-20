@@ -1,4 +1,4 @@
-package com.example.mobile_app
+package tech.crazynft.app
 
 import io.flutter.embedding.android.FlutterActivity
 
