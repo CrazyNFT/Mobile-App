@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile_app/services/api_call.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'mint.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -13,14 +15,21 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getBalance();
-    getAddress();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(FirebaseAuth.instance.currentUser?.uid);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => MintPage(),
+            ),
+          );
+        },
+      ),
       body: SafeArea(
         child: FutureBuilder(
           future: getBalance(),
@@ -29,9 +38,14 @@ class _HomePageState extends State<HomePage> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    Container(
+                    Center(
                       child: Column(
                         children: [
+                          const Text(
+                            'Balance',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
                           Text(snapshot.data.toString()),
                           FutureBuilder(
                               future: getAddress(),
@@ -41,7 +55,28 @@ class _HomePageState extends State<HomePage> {
                                 } else {
                                   return Container();
                                 }
-                              })
+                              }),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              TextButton(
+                                child: const Text('Send'),
+                                onPressed: () {},
+                              ),
+                              TextButton(
+                                child: const Text('Receive'),
+                                onPressed: () {
+                                  getAddress().then((address) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          _buildPopupDialog(context, address),
+                                    );
+                                  });
+                                },
+                              )
+                            ],
+                          )
                         ],
                       ),
                     )
@@ -58,4 +93,39 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+Widget _buildPopupDialog(BuildContext context, String address) {
+  return AlertDialog(
+    title: const Text('QR Code'),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Text(address),
+        SizedBox(
+          height: 200,
+          width: 200,
+          child: QrImage(
+            data: address,
+            version: QrVersions.auto,
+            size: 200.0,
+          ),
+        ),
+      ],
+    ),
+    actions: <Widget>[
+      TextButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: Text(
+          'Close',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
+      ),
+    ],
+  );
 }

@@ -4,6 +4,7 @@ import 'package:mobile_app/screens/home.dart';
 import 'package:mobile_app/services/api_call.dart';
 import 'package:mobile_app/services/authentication.dart';
 import 'package:mobile_app/constants.dart';
+import 'package:mobile_app/screens/landing.dart';
 
 class GoogleSignInButton extends StatefulWidget {
   @override
@@ -44,7 +45,7 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                   login().then(
                     (value) => Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const HomePage(),
+                        builder: (context) => LandingPage(),
                       ),
                     ),
                   );

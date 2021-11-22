@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/services/authentication.dart';
 import 'package:mobile_app/widgets/google_sign_in_button.dart';
+import 'landing.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
