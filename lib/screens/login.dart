@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/services/authentication.dart';
 import 'package:mobile_app/widgets/google_sign_in_button.dart';
 import 'landing.dart';
+import 'package:mobile_app/constants.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -14,6 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffd9f7f5),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.only(
@@ -29,18 +31,20 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     SizedBox(height: 20),
                     Text(
                       'CrazyNFT',
                       style: TextStyle(
-                        fontSize: 40,
-                      ),
+                          fontSize: 40,
+                          fontWeight: FontWeight.w900,
+                          color: primaryColor),
                     ),
                     Text(
                       'App',
                       style: TextStyle(
                         fontSize: 40,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],

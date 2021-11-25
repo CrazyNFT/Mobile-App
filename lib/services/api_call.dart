@@ -55,7 +55,7 @@ Future<String> lazyMint(String uri, String minPrice) async {
     final Map parsed = json.decode(response.body);
     return parsed['result'];
   } else {
-    print(response.body);
+    throw 'Error';
     return "";
   }
 }
@@ -217,8 +217,7 @@ Future<String> uploadPhoto(String path) async {
     print('https://ipfs.infura.io/ipfs/' + parsed['Hash']);
     return 'https://ipfs.infura.io/ipfs/' + parsed['Hash'];
   } else {
-    print(responseString);
-    return "";
+    throw 'Error';
   }
 }
 
@@ -237,7 +236,6 @@ Future<String> uploadJSON(Map<String, dynamic> value) async {
     print('https://ipfs.infura.io/ipfs/' + parsed['Hash']);
     return 'https://ipfs.infura.io/ipfs/' + parsed['Hash'];
   } else {
-    print(responseString);
-    return "";
+    throw 'Error';
   }
 }

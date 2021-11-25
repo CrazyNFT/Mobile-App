@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile_app/constants.dart';
 import 'package:mobile_app/screens/home.dart';
 import 'package:mobile_app/screens/marketplace.dart';
 import 'package:mobile_app/screens/account.dart';
@@ -67,9 +68,9 @@ class _LandingPageState extends State<LandingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
       body: buildPageView(),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Color(0xffc8f3f1),
         type: BottomNavigationBarType.fixed,
         currentIndex: bottomSelectedIndex,
         onTap: (index) {
