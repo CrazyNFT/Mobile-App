@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
+import 'package:mobile_app/screens/send_celo.dart';
 import 'package:mobile_app/services/api_call.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'mint.dart';
@@ -51,7 +53,18 @@ class _HomePageState extends State<HomePage> {
                               future: getAddress(),
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
-                                  return Text(snapshot.data.toString());
+                                  return Column(
+                                    children: [
+                                      Text(snapshot.data.toString()),
+                                      TextButton(
+                                          onPressed: () {
+                                            Clipboard.setData(ClipboardData(
+                                                text:
+                                                    snapshot.data.toString()));
+                                          },
+                                          child: Icon(Icons.copy))
+                                    ],
+                                  );
                                 } else {
                                   return Container();
                                 }
@@ -61,7 +74,13 @@ class _HomePageState extends State<HomePage> {
                             children: [
                               TextButton(
                                 child: const Text('Send'),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => SendCeloPage(),
+                                    ),
+                                  );
+                                },
                               ),
                               TextButton(
                                 child: const Text('Receive'),

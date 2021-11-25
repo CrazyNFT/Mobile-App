@@ -37,18 +37,17 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                 User? user =
                     await Authentication.signInWithGoogle(context: context);
 
-                setState(() {
-                  _isSigningIn = false;
-                });
-
                 if (user != null) {
-                  login().then(
-                    (value) => Navigator.of(context).pushReplacement(
+                  login().then((value) {
+                    setState(() {
+                      _isSigningIn = false;
+                    });
+                    Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
                         builder: (context) => LandingPage(),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 }
               },
               child: Padding(

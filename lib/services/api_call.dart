@@ -72,9 +72,31 @@ Future<Map<String, dynamic>> getNFT(String uri) async {
   }
 }
 
+Future<String> getWithdrawBalance() async {
+  final response =
+      await http.get(Uri.parse(apiUrl + '/api/getWithdrawBalance?uid=' + uid!));
+
+  if (response.statusCode == 200) {
+    final Map parsed = json.decode(response.body);
+    return parsed['result'];
+  } else {
+    print(response.body);
+    return "";
+  }
+}
+
+Future withdraw() async {
+  final response =
+      await http.get(Uri.parse(apiUrl + '/api/withdraw?uid=' + uid!));
+
+  if (response.statusCode == 200) {
+  } else {
+    print(response.body);
+  }
+}
+
 Future<List<dynamic>> getNFTs() async {
   final response = await http.get(Uri.parse(apiUrl + '/api/marketplace'));
-
   if (response.statusCode == 200) {
     final parsed = json.decode(response.body);
     return parsed['result'];
@@ -84,6 +106,46 @@ Future<List<dynamic>> getNFTs() async {
       {'result': ''}
     ];
   }
+}
+
+Future<String> getURI(String tokenId) async {
+  final response =
+      await http.get(Uri.parse(apiUrl + '/api/getURI?id=' + tokenId));
+  if (response.statusCode == 200) {
+    final parsed = json.decode(response.body);
+    return parsed['result'];
+  } else {
+    print(response.body);
+    return "";
+  }
+}
+
+Future<List<dynamic>> getOwned() async {
+  final response =
+      await http.get(Uri.parse(apiUrl + '/api/ownednft?uid=' + uid!));
+  if (response.statusCode == 200) {
+    final parsed = json.decode(response.body);
+    return parsed['result'];
+  } else {
+    print(response.body);
+    return [
+      {'result': ''}
+    ];
+  }
+}
+
+Future<List<dynamic>> getOwnedURI() async {
+  List<dynamic> owned = await getOwned();
+  List<Map<String, dynamic>> nfts = [];
+  List<Future<Map<String, dynamic>>> futureNfts = owned.map((e) {
+    return getURI(e['tokenId'].toString())
+        .then((value) => {'uri': value, 'tokenId': e['tokenId'].toString()});
+  }).toList();
+  for (Future<Map<String, dynamic>> nft in futureNfts) {
+    Map<String, dynamic> val = await nft;
+    nfts.add({'uri': val['uri'], 'tokenId': val['tokenId']});
+  }
+  return nfts;
 }
 
 Future<List<dynamic>> tokenTransfers() async {
@@ -105,6 +167,37 @@ Future redeem(String doc) async {
       .get(Uri.parse(apiUrl + '/api/redeem?uid=' + uid! + '&doc=' + doc));
   print(apiUrl + '/api/redeem?uid=' + uid! + '&doc=' + doc);
 
+  if (response.statusCode == 200) {
+    print(response.body);
+  } else {
+    final parsed = json.decode(response.body);
+    throw parsed['result'];
+  }
+}
+
+Future sendCelo(String address, String amount) async {
+  final response = await http.get(Uri.parse(apiUrl +
+      '/api/sendCelo?uid=' +
+      uid! +
+      '&address=' +
+      address +
+      '&amount=' +
+      amount));
+  if (response.statusCode == 200) {
+  } else {
+    final parsed = json.decode(response.body);
+    throw parsed['result'];
+  }
+}
+
+Future tokenTransfer(String address, String id) async {
+  final response = await http.get(Uri.parse(apiUrl +
+      '/api/transfer?uid=' +
+      uid! +
+      '&address=' +
+      address +
+      '&id=' +
+      id));
   if (response.statusCode == 200) {
   } else {
     final parsed = json.decode(response.body);

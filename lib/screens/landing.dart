@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/home.dart';
 import 'package:mobile_app/screens/marketplace.dart';
-import 'package:mobile_app/screens/transfers.dart';
+import 'package:mobile_app/screens/account.dart';
+import 'package:mobile_app/screens/token.dart';
 
 class LandingPage extends StatefulWidget {
   @override
@@ -18,8 +19,9 @@ class _LandingPageState extends State<LandingPage> {
         icon: new Icon(Icons.search),
         label: 'Marketplace',
       ),
+      BottomNavigationBarItem(icon: Icon(Icons.money), label: 'Tokens'),
       BottomNavigationBarItem(
-          icon: Icon(Icons.info_outline), label: 'Token Transfers')
+          icon: Icon(Icons.account_box_rounded), label: 'Account')
     ];
   }
 
@@ -37,7 +39,8 @@ class _LandingPageState extends State<LandingPage> {
       children: <Widget>[
         HomePage(),
         MarketplacePage(),
-        TransfersPage(),
+        TokenPage(),
+        AccountPage(),
       ],
     );
   }
@@ -67,6 +70,7 @@ class _LandingPageState extends State<LandingPage> {
       appBar: AppBar(),
       body: buildPageView(),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         currentIndex: bottomSelectedIndex,
         onTap: (index) {
           bottomTapped(index);

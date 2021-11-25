@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:mobile_app/screens/nft.dart';
+import 'package:mobile_app/screens/token_info.dart';
 import 'package:mobile_app/services/api_call.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-class MarketplacePage extends StatefulWidget {
-  const MarketplacePage({Key? key}) : super(key: key);
+class TokenPage extends StatefulWidget {
+  const TokenPage({Key? key}) : super(key: key);
 
   @override
-  _MarketplacePageState createState() => _MarketplacePageState();
+  _TokenPageState createState() => _TokenPageState();
 }
 
-class _MarketplacePageState extends State<MarketplacePage> {
+class _TokenPageState extends State<TokenPage> {
   bool _loading = false;
 
   @override
@@ -24,41 +24,9 @@ class _MarketplacePageState extends State<MarketplacePage> {
       inAsyncCall: _loading,
       child: Column(
         children: [
-          FutureBuilder(
-            future: getWithdrawBalance(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return Column(
-                  children: [
-                    Text('Available to Withdraw: ' + snapshot.data!.toString()),
-                    snapshot.data!.toString() == "0"
-                        ? const TextButton(
-                            child: Text('Withdraw'),
-                            onPressed: null,
-                          )
-                        : TextButton(
-                            child: Text('Withdraw'),
-                            onPressed: () {
-                              setState(() {
-                                _loading = true;
-                              });
-                              withdraw().then((value) {
-                                setState(() {
-                                  _loading = false;
-                                });
-                              });
-                            },
-                          )
-                  ],
-                );
-              } else {
-                return Center(child: CircularProgressIndicator());
-              }
-            },
-          ),
           Expanded(
             child: FutureBuilder(
-              future: getNFTs(),
+              future: getOwnedURI(),
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   final val = snapshot.data as List<dynamic>;
@@ -67,7 +35,7 @@ class _MarketplacePageState extends State<MarketplacePage> {
                       .toList();
                   if (nfts.length == 0) {
                     return Center(
-                      child: Text('No NFTs published on the marketplace'),
+                      child: Text('You own no tokens'),
                     );
                   } else {
                     return GridView.count(
@@ -89,18 +57,16 @@ class _MarketplacePageState extends State<MarketplacePage> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                         MaterialPageRoute(
-                                          builder: (context) => NFTPage(
+                                          builder: (context) => TokenInfoPage(
                                             doc: metadata,
-                                            minPrice: nft['minPrice'],
-                                            id: nft['id'],
+                                            id: nft['tokenId'],
                                           ),
                                         ),
                                       );
                                     },
                                   );
                                 } else {
-                                  return Center(
-                                      child: CircularProgressIndicator());
+                                  return CircularProgressIndicator();
                                 }
                               });
                         }).toList());

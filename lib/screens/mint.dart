@@ -87,8 +87,9 @@ class _MintPageState extends State<MintPage> {
     );
 
     AlertDialog alert = AlertDialog(
-      title: Text("Mint NFT?"),
-      content: Text("Are you sure you want to min this NFT?"),
+      title: Text("Publish NFT?"),
+      content:
+          Text("Are you sure you want to publish this NFT on the marketplace?"),
       actions: [
         cancelButton,
         continueButton,
@@ -109,7 +110,7 @@ class _MintPageState extends State<MintPage> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          title: Text("Image Picker"),
+          title: Text("Publish NFT"),
         ),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -174,7 +175,7 @@ class _MintPageState extends State<MintPage> {
                           onPressed: () {
                             showConfirmDialog(context);
                           },
-                          child: Text('Submit'),
+                          child: Text('Publish'),
                         )
                       ],
                     ),
